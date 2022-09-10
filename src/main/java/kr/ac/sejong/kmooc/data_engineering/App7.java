@@ -33,6 +33,8 @@ public class App7 {
 	}
 	
 	public static void main(String args[]) throws IOException {
+		long pre = System.currentTimeMillis();
+		
 		BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\박유진\\Data\\email.txt"));
 		Email[] data = new Email[420045];
 		int index = 0;  //가장 최소의 사람 ID를 담는 max변수
@@ -54,5 +56,7 @@ public class App7 {
 		app3(data);
 		app4(data);
 		app5(data);
+		
+		System.out.println(System.currentTimeMillis()-pre);
 	}
 }
