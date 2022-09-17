@@ -21,7 +21,7 @@ public class ArrayListExample5 {
 		emails.add(new Email(0,1));
 		emails.add(new Email(2,2));
 		System.out.println(emails);
-		//System.out.println(emails.contains(new Email(0,1)));  --> 오류 contains는 ==을 이용해 비교
+		//System.out.println(emails.contains(new Email(0,1)));  --> 오류 contains는 equals 함수를 이용해 비교
 		
 		//Email에서 equals 함수 오버라이딩
 		System.out.println(emails.contains(new Email(0,1)));
