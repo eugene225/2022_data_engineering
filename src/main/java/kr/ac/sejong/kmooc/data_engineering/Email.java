@@ -12,5 +12,12 @@ public class Email {
 	public String toString() {
 		return from +" -> "+to;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Email objEmail = (Email) obj;
+		if(from == objEmail.from && to == objEmail.to) return true;
+		else return false;
+	}
 
 }
