@@ -16,9 +16,12 @@ public class MyArrayList<E> implements List<E>{
 	
 	@Override
 	public String toString() {
+		if(data.length==0) return "[]";
+		
 		String result = "[";
-		for(Object val: data) {
-			result += " " + val + " ";
+		result += data[0];
+		for(int i=1; i<data.length; i++) {
+			result += ", " + data[i];
 		}
 		result += "]";
 		
@@ -46,7 +49,9 @@ public class MyArrayList<E> implements List<E>{
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
+		for(Object value: data) {
+			if(value.equals(o)) return true;
+		}
 		return false;
 	}
 
@@ -89,8 +94,27 @@ public class MyArrayList<E> implements List<E>{
 
 	@Override
 	public boolean remove(Object o) {
-		// TODO Auto-generated method stub
-		return false;
+		int ri = indexOf(o);
+		
+		if(ri == -1) return false;
+		
+		
+		//1. 크기가 하나 작은 object[] newdata
+		Object[] newData = new Object[data.length-1];
+		
+		//2. 복사
+		for(int i=0;i<data.length;i++) {
+			if(i==ri) break;
+			newData[i] = data[i];
+		}
+		for(int i=ri+1;i<data.length;i++) {
+			newData[i-1] = data[i];
+		}
+		
+		//3. 새로운 newData가 data
+		data = newData;
+		
+		return true;
 	}
 
 	@Override
@@ -131,14 +155,20 @@ public class MyArrayList<E> implements List<E>{
 
 	@Override
 	public E get(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		// [3, 5, 7] = size 3, last index = 2
+		if(index >= data.length || index < 0) throw new IndexOutOfBoundsException(index);
+		
+		return (E) data[index];
 	}
 
 	@Override
 	public E set(int index, E element) {
-		// TODO Auto-generated method stub
-		return null;
+		if(index>=data.length || index<0) throw new IndexOutOfBoundsException("Index "+index+" out of bound");
+		
+		E e = (E) data[index];
+		data[index] = element;
+		
+		return e;
 	}
 
 	@Override
@@ -175,14 +205,18 @@ public class MyArrayList<E> implements List<E>{
 
 	@Override
 	public int indexOf(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
+		for(int i=0;i<data.length;i++) {
+			if(data[i].equals(o)) return i;
+		}
+		return -1;
 	}
 
 	@Override
 	public int lastIndexOf(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
+		for(int i=data.length-1;i>=0;i--) {
+			if(data[i].equals(o)) return i;
+		}
+		return -1;
 	}
 
 	@Override
