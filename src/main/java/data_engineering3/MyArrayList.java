@@ -57,8 +57,7 @@ public class MyArrayList<E> implements List<E>{
 
 	@Override
 	public Iterator<E> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new MyArrayListIterator<E>(data);
 	}
 
 	@Override
