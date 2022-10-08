@@ -1,5 +1,7 @@
-package data_engineering3;
+package kr.kmooc.dataEngineering.homework1;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -11,7 +13,7 @@ public class MyArrayList<E> implements List<E>{
 	private Object[] data;
 	
 	public MyArrayList() {
-		data = new Object[0];
+		this.data = new Object[0];
 	}
 	
 	@Override
@@ -26,11 +28,6 @@ public class MyArrayList<E> implements List<E>{
 		result += "]";
 		
 		return result;
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -57,19 +54,7 @@ public class MyArrayList<E> implements List<E>{
 
 	@Override
 	public Iterator<E> iterator() {
-		return new MyArrayListIterator<E>(data);
-	}
-
-	@Override
-	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <T> T[] toArray(T[] a) {
-		// TODO Auto-generated method stub
-		return null;
+		return new MyArrayListListIterator<E>(data, 0);
 	}
 
 	@Override
@@ -106,7 +91,7 @@ public class MyArrayList<E> implements List<E>{
 			if(i==ri) break;
 			newData[i] = data[i];
 		}
-		for(int i=ri+1;i<data.length;i++) {
+		for(int i=ri+1;i<newData.length;i++) {
 			newData[i-1] = data[i];
 		}
 		
@@ -114,42 +99,6 @@ public class MyArrayList<E> implements List<E>{
 		data = newData;
 		
 		return true;
-	}
-
-	@Override
-	public boolean containsAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends E> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends E> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean removeAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean retainAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void clear() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -197,12 +146,6 @@ public class MyArrayList<E> implements List<E>{
 	}
 
 	@Override
-	public E remove(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public int indexOf(Object o) {
 		for(int i=0;i<data.length;i++) {
 			if(data[i].equals(o)) return i;
@@ -217,17 +160,91 @@ public class MyArrayList<E> implements List<E>{
 		}
 		return -1;
 	}
+	
+	@Override
+	public Object[] toArray() {
+		return Arrays.copyOf(data, data.length);
+	}
+
+	@Override
+	public <T> T[] toArray(T[] a) {
+		if(a.length < data.length) {
+			return (T[]) Arrays.copyOf(data, data.length, a.getClass());
+		}
+		System.arraycopy(data, 0, a, 0, data.length);
+		return a;
+	}
+
+	@Override
+	public boolean containsAll(Collection<?> c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean addAll(Collection<? extends E> c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean addAll(int index, Collection<? extends E> c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean removeAll(Collection<?> c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean retainAll(Collection<?> c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void clear() {
+		this.data = new Object[0];
+		
+		return;
+	}
+
+	@Override
+	public E remove(int index) {		
+		if(index == -1) return null;
+		
+		
+		//1. 크기가 하나 작은 object[] newdata
+		Object[] newData = new Object[data.length-1];
+		
+		//2. 복사
+		for(int i=0;i<data.length;i++) {
+			if(i==index) break;
+			newData[i] = data[i];
+		}
+		for(int i=index+1;i<newData.length;i++) {
+			newData[i-1] = data[i];
+		}
+		
+		//3. 새로운 newData가 data
+		E re = (E) data[index];
+		data = newData;
+		
+		return (E) re;
+	}
 
 	@Override
 	public ListIterator<E> listIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new MyArrayListListIterator<E>(data,0);
 	}
 
 	@Override
 	public ListIterator<E> listIterator(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		return new MyArrayListListIterator<E>(data,index);
+
 	}
 
 	@Override
