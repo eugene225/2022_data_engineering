@@ -1,8 +1,9 @@
 package data_engineering4;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 public class LinkedListExample6 {
 	public static void main(String[] args) {
@@ -15,25 +16,18 @@ public class LinkedListExample6 {
 		linkedList.add(7);
 		linkedList.add(9);
 		
-		List<Integer> arrayList = new ArrayList<Integer>(linkedList);
+		Iterator<Integer> iterator = linkedList.iterator();
+		while(iterator.hasNext()) {
+			System.out.println(iterator.next());
+		}
+		for(Integer val : linkedList) {
+			System.out.println(val);
+		}
 		
-		System.out.println(linkedList);
-		System.out.println(arrayList);
-		linkedList.set(2, 4);
-		arrayList.set(2, 4);
-		System.out.println(linkedList);
-		System.out.println(arrayList);
+		ListIterator<Integer> listIterator = linkedList.listIterator(3);
+		while(listIterator.hasPrevious()) {
+			System.out.println(listIterator.previous());
+		}
 		
-		System.out.println(linkedList.remove(Integer.valueOf(4)));
-		System.out.println(arrayList.remove(Integer.valueOf(4)));
-		
-		System.out.println(linkedList);
-		System.out.println(arrayList);
-		
-		System.out.println(linkedList.remove(3));
-		System.out.println(arrayList.remove(3));
-		
-		System.out.println(linkedList);
-		System.out.println(arrayList);
 	}
 }
