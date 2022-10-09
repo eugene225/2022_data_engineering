@@ -20,4 +20,11 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/main/java/kr/kmooc/dataEngineering/homwork2_3/Test.java</name>
+			<type>1</type>
+			<location>E:/3학년2학기/데이터엔지니어링/과제2-3_가이드라인/Test.java</location>
+		</link>
+	</linkedResources>
 </projectDescription>

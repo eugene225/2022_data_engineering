@@ -1,10 +1,10 @@
 package data_engineering4;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 
 import kr.ac.sejong.kmooc.data_engineering.Email;
+import kr.kmooc.dataEngineering.homwork2_3.MyLinkedList;
 
 public class LinkedListExample1 {
 	public static void main(String[] args) {		
@@ -21,6 +21,9 @@ public class LinkedListExample1 {
 		System.out.println(arrayList);
 		System.out.println(stringList);
 		System.out.println(emailList);
+		
+		MyLinkedList<Integer> intList2 = new MyLinkedList<Integer>(arrayList);
+		System.out.println(intList2);
 
 	}
 }
