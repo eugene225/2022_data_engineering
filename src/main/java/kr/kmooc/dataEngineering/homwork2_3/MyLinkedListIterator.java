@@ -1,50 +1,43 @@
 package kr.kmooc.dataEngineering.homwork2_3;
 
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 public class MyLinkedListIterator<E> implements ListIterator<E> {
 
-	private MyNode<E> last;
-	private MyNode<E> next;
+	private MyLinkedList<E> data;
+	private int cursor;
 	private MyNode<E> lastReturned;
-	private int nextIndex;
-	private int size;
 	
-	MyLinkedListIterator (MyNode<E> first, MyNode<E> last, int size){
-		this.next = first;
-		this.last = last;
-		this.size = size;
-		this.nextIndex = 0;
+	MyLinkedListIterator (MyLinkedList<E> data, int index){
+		this.data= data;
+		this.cursor = index-1;
 	}
 	
 	@Override
 	public boolean hasNext() {
-		return nextIndex < size;
+		if(cursor+1<data.size()) {
+			return true;
+		}
+		else return false;
 	}
 
 	@Override
 	public E next() {
-		lastReturned = next;
-		next = next.getNext();
-		nextIndex++;
-		return lastReturned.getItem();
-		
+		lastReturned = data.getNode(++cursor);
+		return (E) lastReturned.getItem();
 	}
 
 	@Override
 	public boolean hasPrevious() {
-		return nextIndex > 0;
+		if(cursor>0) return true;
+		return false;
 	}
 
 	@Override
 	public E previous() {
-		if(next == null) {
-			lastReturned = next = last;
-		}else {
-			lastReturned = next = next.getPrev();
-		}
-		nextIndex--;
-		return lastReturned.getItem();
+		lastReturned = data.getNode(cursor);
+		return (E) data.get(cursor--);
 	}
 
 	@Override
@@ -67,7 +60,7 @@ public class MyLinkedListIterator<E> implements ListIterator<E> {
 
 	@Override
 	public void set(E e) {
-		// TODO Auto-generated method stub
+		lastReturned.setItem(e);
 		
 	}
 

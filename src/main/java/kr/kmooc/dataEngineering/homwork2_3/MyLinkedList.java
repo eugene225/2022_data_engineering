@@ -7,7 +7,7 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
-public class MyLinkedList<E> implements List<E>, Queue<E> {
+public class MyLinkedList<E> implements List<E>, Queue<E>{
 	
 	private MyNode<E> first;
 	private MyNode<E> last;
@@ -111,8 +111,8 @@ public class MyLinkedList<E> implements List<E>, Queue<E> {
 	
 	@Override
 	public boolean offer(E e) {
-		// TODO Auto-generated method stub
-		return false;
+		addLast(e);
+		return true;
 	}
 
 	@Override
@@ -146,37 +146,57 @@ public class MyLinkedList<E> implements List<E>, Queue<E> {
 
 	@Override
 	public E poll() {
-		// TODO Auto-generated method stub
-		return null;
+		if(size==0) {
+			return null;
+		}else {
+			return remove(0);
+		}
 	}
 
 	@Override
 	public E element() {
-		// TODO Auto-generated method stub
-		return null;
+		if(size==0) {
+			throw new NoSuchElementException();
+		}else {
+			return get(0);
+		}
 	}
 
 	@Override
 	public E peek() {
-		// TODO Auto-generated method stub
-		return null;
+		if(size==0) {
+			return null;
+		}else {
+			return get(0);
+		}
 	}
 
 
 	@Override
 	public boolean contains(Object o) {
-		return indexOf(o) >= 0;
+		if(size==0) return false;
+		MyNode<E> cursor = first;
+		do {
+			if(cursor.getItem().equals(o)) return true;
+			cursor = cursor.getNext();
+		}while(cursor!=null);
+		return false;
 	}
 
 	@Override
 	public Iterator<E> iterator() {
-		return new MyLinkedListIterator(first, last, size);
+		return new MyLinkedListIterator<E>(this, 0);
 	}
 
 	@Override
 	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+		Object[] array = new Object[size];
+		int idx = 0;
+		
+		for(E val: this) {
+			array[idx++] = val;
+		}
+		return array;
 	}
 
 	@Override
@@ -187,8 +207,26 @@ public class MyLinkedList<E> implements List<E>, Queue<E> {
 
 	@Override
 	public boolean remove(Object o) {
-		// TODO Auto-generated method stub
-		return false;
+		MyNode<E> nodeToRemove = getNode(o);
+		if(nodeToRemove==null) return false;
+		
+		MyNode<E> next = nodeToRemove.getNext();
+		MyNode<E> prev = nodeToRemove.getPrev();
+		
+		if(prev==null) {
+			first = next;
+		}
+		else {
+			prev.setNext(next);
+		}
+		
+		if(next==null) {
+			last = prev;
+		}else {
+			next.setPrev(prev);
+		}
+		size--;
+		return true;
 	}
 
 	@Override
@@ -223,19 +261,62 @@ public class MyLinkedList<E> implements List<E>, Queue<E> {
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		while(size!=0) {
+			remove(0);
+		}
 	}
 
 	@Override
 	public E get(int index) {
-		return search(index).getItem();
+		if(index >= size || index<0) {
+			throw new IndexOutOfBoundsException("Index "+index+" out of bounds for length "+size);
+		}
+		
+		int cIdx = 0;
+		MyNode<E> cursor = first;
+		do {
+			if(cIdx == index) return cursor.getItem();
+			cursor = cursor.getNext();
+			cIdx++;
+		}while(cursor!=null);
+		
+		return null;
+	}
+	
+	public MyNode<E> getNode(int index) {
+		if(index >= size || index<0) {
+			throw new IndexOutOfBoundsException("Index "+index+" out of bounds for length "+size);
+		}
+		
+		int cIdx = 0;
+		MyNode<E> cursor = first;
+		do {
+			if(cIdx == index) return cursor;
+			cursor = cursor.getNext();
+			cIdx++;
+		}while(cursor!=null);
+		
+		return null;
+	}
+	
+	private MyNode<E> getNode(Object o) {				
+		int cIdx = 0;
+		MyNode<E> cursor = first;
+		do {
+			if(cursor.getItem().equals(o)) return cursor;
+			cursor = cursor.getNext();
+			cIdx++;
+		}while(cursor!=null);
+		
+		return null;
 	}
 
 	@Override
 	public E set(int index, E element) {
-		// TODO Auto-generated method stub
-		return null;
+		MyNode<E> node = getNode(index);
+		E prevOne = node.getItem();
+		node.setItem(element);
+		return prevOne;
 	}
 
 	@Override
@@ -244,98 +325,85 @@ public class MyLinkedList<E> implements List<E>, Queue<E> {
 			throw new IndexOutOfBoundsException();
 		}
 		
-		if(index == 0) {
-			addFirst(element);
-			return;
-		}
-		
 		if(index == size) {
 			addLast(element);
 			return;
 		}
 		
-		MyNode<E> pre_Node = search(index-1);
-		MyNode<E> next_Node = pre_Node.getNext();
+		MyNode<E> prev = getNode(index-1);
+		MyNode<E> next = prev.getNext();
 		
-		MyNode<E> newNode = new MyNode<E>(null, element, null);
+		MyNode<E> newNode = new MyNode<E>(prev, element, next);
 		
-		pre_Node.setNext(newNode);
-		newNode.setPrev(pre_Node);
-		newNode.setNext(next_Node);
-		next_Node.setPrev(newNode);
-		
+		if(prev!= null) {
+			prev.setNext(newNode);
+		}
+		else {
+			first = newNode;
+		}
+		next.setPrev(newNode);
 		size++;
-		
 	}
 
 	@Override
 	public E remove(int index) {
-		if(index >= size || index < 0) {
-			throw new IndexOutOfBoundsException();
+		MyNode<E> nodeToRemove = getNode(index);
+		MyNode<E> next = nodeToRemove.getNext();
+		MyNode<E> prev = nodeToRemove.getPrev();
+		E element = nodeToRemove.getItem();
+		
+		if(prev==null) {
+			first = next;
+		}
+		else {
+			prev.setNext(next);
 		}
 		
-		if(index==0) {
-			E element = first.getItem();
-			remove();
-			return element;
-		}
-
-		MyNode<E> removeNode = search(index);
-		MyNode<E> prevNode = removeNode.getPrev();
-		MyNode<E> nextNode = removeNode.getNext();
-		
-		E element = removeNode.getItem();
-		
-		prevNode.setNext(null);
-		removeNode.setNext(null);
-		removeNode.setPrev(null);
-		removeNode.setItem(null);
-		
-		if(nextNode != null) {
-			nextNode.setPrev(null);
-			
-			nextNode.setPrev(prevNode);
-			prevNode.setNext(nextNode);
+		if(next==null) {
+			last = prev;
 		}else {
-			last = prevNode;
+			next.setPrev(prev);
 		}
 		size--;
-		
-		return element;		
+		return element;
 	}
 
 	@Override
 	public int indexOf(Object o) {
-		int index=0;
+		if(size==0) return -1;
 		
-		for(MyNode<E> x = first; x!=null; x = x.getNext()) {
-			if(o.equals(x.getItem())) return index;
-			index++;
-		}
+		int cIdx = 0;
+		MyNode<E> cursor = first;
+		do {
+			if(cursor.getItem().equals(o)) return cIdx;
+			cursor = cursor.getNext();
+			cIdx++;
+		}while(cursor!=null);
+		
 		return -1;
 	}
 
 	@Override
 	public int lastIndexOf(Object o) {
-		int index = size;
+		int cIdx = size-1;
 		
-		for(MyNode<E> x = last; x!= null; x = x.getPrev()) {
-			index--;
-			if(o.equals(x.getItem())) return index;
-		}
+		MyNode<E> cursor = last;
+		do {
+			if(cursor.getItem().equals(o)) return cIdx;
+			cursor = cursor.getPrev();
+			cIdx--;
+		}while(cursor!=null);
 		return -1;
 	}
 
 	@Override
 	public ListIterator<E> listIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new MyLinkedListIterator<E>(this, 0);
 	}
 
 	@Override
 	public ListIterator<E> listIterator(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		return new MyLinkedListIterator<E>(this, index);
 	}
 
 	@Override

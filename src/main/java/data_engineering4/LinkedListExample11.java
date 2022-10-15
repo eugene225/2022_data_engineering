@@ -3,16 +3,16 @@ package data_engineering4;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 
 import kr.ac.sejong.kmooc.data_engineering.Email;
+import kr.kmooc.dataEngineering.homwork2_3.MyLinkedList;
 
 public class LinkedListExample11 {
 	
 	public static List<Email> getData() throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\박유진\\Data\\email.txt"));
-		List<Email> data = new LinkedList<Email>();
+		List<Email> data = new MyLinkedList<Email>();
 		int count = 0;  //가장 최소의 사람 ID를 담는 max변수
 		while(true) {
 			String line = br.readLine();
