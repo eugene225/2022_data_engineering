@@ -11,7 +11,7 @@ import java.util.List;
 import kr.ac.sejong.kmooc.data_engineering.Email;
 import kr.kmooc.dataEngineering.homwork2_3.MyLinkedList;
 
-public class HashSetExample6 {
+public class HashSetExample8 {
 	
 	public static HashSet<Integer> getHashSetID() throws IOException {
 		HashSet<Integer> data = new HashSet<Integer>();
@@ -117,21 +117,24 @@ public class HashSetExample6 {
 	public static void main(String[] args) throws IOException {
 		List<Email> data = getArrayListID();
 		
-		ArrayList<Integer> occurrence = new ArrayList<Integer>();
+		ArrayList<HashSet<Integer>> receivers = new ArrayList<HashSet<Integer>>();
 		for(int i=0;i<265215;i++) {
-			occurrence.add(0);
+			receivers.add(new HashSet<Integer>());
 		}
 		
 		HashSet<Occurrence> occSet = new HashSet<Occurrence>();
 		for(Email email: data) {
 			int from = email.getFrom();
 			int to = email.getTo();
-			occurrence.set(from, occurrence.get(from)+1);
-			occurrence.set(to, occurrence.get(to)+1);
+			
+			//receivers의 from index의 HashSet에 to를 추가
+			HashSet<Integer> current = receivers.get(from);
+			current.add(to);
+			receivers.set(from,  current);
 		}
 		
-		for(int i=0;i<occurrence.size();i++) {
-			System.out.println(i+" : "+occurrence.get(i));
+		for(int i=0;i<receivers.size();i++) {
+			System.out.println(i+" : "+receivers.get(i));
 		}
 
 	}

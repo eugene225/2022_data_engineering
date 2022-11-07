@@ -11,7 +11,7 @@ import java.util.List;
 import kr.ac.sejong.kmooc.data_engineering.Email;
 import kr.kmooc.dataEngineering.homwork2_3.MyLinkedList;
 
-public class HashSetExample6 {
+public class HashSetExample7 {
 	
 	public static HashSet<Integer> getHashSetID() throws IOException {
 		HashSet<Integer> data = new HashSet<Integer>();
@@ -72,8 +72,8 @@ public class HashSetExample6 {
 		return data;
 	}
 	
-	public static ArrayList<Email> getArrayListID() throws IOException {
-		ArrayList<Email> data = new ArrayList<Email>();
+	public static ArrayList<Integer> getArrayListID() throws IOException {
+		ArrayList<Integer> data = new ArrayList<Integer>();
 		BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\박유진\\Data\\email.txt"));
 		
 		int count = 0;
@@ -85,7 +85,8 @@ public class HashSetExample6 {
 			String[] array = line.split("\t");
 			int from = Integer.parseInt(array[0]);
 			int to = Integer.parseInt(array[1]);
-			data.add(0, new Email(from, to));
+			if(!data.contains(from)) data.add(from);
+			if(!data.contains(to)) data.add(to);
 		}
 		
 		br.close();
@@ -115,24 +116,24 @@ public class HashSetExample6 {
 	}
 
 	public static void main(String[] args) throws IOException {
-		List<Email> data = getArrayListID();
 		
-		ArrayList<Integer> occurrence = new ArrayList<Integer>();
-		for(int i=0;i<265215;i++) {
-			occurrence.add(0);
-		}
+		HashSet<Integer> senderSet = getHashSetSenderIDs();
+		HashSet<Integer> receiverSet = getHashSetReceiverIDs();
 		
-		HashSet<Occurrence> occSet = new HashSet<Occurrence>();
-		for(Email email: data) {
-			int from = email.getFrom();
-			int to = email.getTo();
-			occurrence.set(from, occurrence.get(from)+1);
-			occurrence.set(to, occurrence.get(to)+1);
-		}
+		System.out.println("보낸 사람 수: "+senderSet.size());
+		System.out.println("받는 사람 수: " + senderSet.size());
 		
-		for(int i=0;i<occurrence.size();i++) {
-			System.out.println(i+" : "+occurrence.get(i));
-		}
+		//합집합
+		//senderSet.addAll(receiverSet);
+		//System.out.println("이메일 네트워크에 참여한 사람 수: " + senderSet.size());
+		
+		//교집합
+		//senderSet.retainAll(receiverSet);
+		//System.out.println("이메일을 보내기도 하고 받기도한 사람의 수: " + senderSet.size());
+
+		//차집합
+		senderSet.removeAll(receiverSet);
+		System.out.println("이메일을 보내기만 사람의 수: " + senderSet.size());
 
 	}
 
