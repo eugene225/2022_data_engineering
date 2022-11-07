@@ -1,0 +1,30 @@
+package data_engineering_hashmap;
+
+import java.util.HashMap;
+
+import kr.ac.sejong.kmooc.data_engineering.Email;
+
+public class HashMapExample3 {
+	
+	public static void main(String[] args) {
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		System.out.println(map.isEmpty());
+		System.out.println(map.size());
+		System.out.println(map);
+		map.put(1, 3);
+		map.put(2, 4);
+		System.out.println(map);
+		System.out.println(map.isEmpty());
+		System.out.println(map.size());
+		map.putIfAbsent(1, 5);
+		System.out.println(map);
+		System.out.println(map.isEmpty());
+		System.out.println(map.size());
+		map.putIfAbsent(3, 6);
+		System.out.println(map);
+		System.out.println(map.isEmpty());
+		System.out.println(map.size());
+		
+	}
+
+}
